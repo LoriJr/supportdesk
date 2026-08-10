@@ -1,32 +1,42 @@
 package com.viratech.supportdesk.service;
 
 import com.viratech.supportdesk.domain.User;
+import com.viratech.supportdesk.dto.UserRequest;
+import com.viratech.supportdesk.dto.UserResponse;
 import com.viratech.supportdesk.enums.Role;
+import com.viratech.supportdesk.mapper.UserMapper;
 import com.viratech.supportdesk.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+
 @Service
 @RequiredArgsConstructor
 public class UserService {
 
     private final UserRepository repository;
+    private final UserMapper mapper;
     private static final Logger log = LoggerFactory.getLogger(UserService.class);
 
-    public User saveUser(User user){
+    public UserResponse saveUser(UserRequest request){
 
         String className = UserService.class.getSimpleName();
 
-        if(user == null){
+        if(request == null){
             throw new IllegalStateException("Request body must not be null");
         }
 
+        User user = mapper.toEntity(request);
         user.setRole(Role.EMPLOYEE);
+        user.setCreatedAt(LocalDateTime.now());
 
-        log.info("[{}] [UserSave] Recebido dados do usuário {}", className, user);
+        User savedUser = repository.save(user);
 
-        return repository.save(user);
+        log.info("[{}] [SaveUser] Recebido dados do usuário {}", className, savedUser.getId());
+
+        return mapper.toDto(savedUser);
     }
 }

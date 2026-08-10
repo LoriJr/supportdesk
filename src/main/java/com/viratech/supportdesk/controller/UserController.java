@@ -1,6 +1,8 @@
 package com.viratech.supportdesk.controller;
 
 import com.viratech.supportdesk.domain.User;
+import com.viratech.supportdesk.dto.UserRequest;
+import com.viratech.supportdesk.dto.UserResponse;
 import com.viratech.supportdesk.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -14,7 +16,8 @@ public class UserController {
     private final UserService service;
 
     @PostMapping
-    public ResponseEntity<User> save(@RequestBody User user){
-        return ResponseEntity.ok(service.saveUser(user));
+    public ResponseEntity<UserResponse> save(@RequestBody UserRequest request){
+        UserResponse response = service.saveUser(request);
+        return ResponseEntity.ok(response);
     }
 }
