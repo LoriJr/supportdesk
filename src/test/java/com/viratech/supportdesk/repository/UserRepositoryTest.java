@@ -2,7 +2,6 @@ package com.viratech.supportdesk.repository;
 
 import com.viratech.supportdesk.domain.User;
 import com.viratech.supportdesk.enums.Role;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

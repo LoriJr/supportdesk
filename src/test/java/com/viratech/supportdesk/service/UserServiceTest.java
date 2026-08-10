@@ -9,27 +9,27 @@ import com.viratech.supportdesk.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.springframework.context.annotation.Description;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
+@ExtendWith(MockitoExtension.class)
 public class UserServiceTest {
 
     @Mock
     private UserRepository repository;
 
-    @InjectMocks
+    private UserMapper mapper;
     private UserService service;
 
     @BeforeEach
     void setUp(){
-        repository = mock(UserRepository.class);
-        UserMapper mapper = new UserMapper();
+        mapper = new UserMapper();
         service = new UserService(repository, mapper);
     }
 
