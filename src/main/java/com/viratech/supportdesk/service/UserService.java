@@ -36,7 +36,6 @@ public class UserService {
 
         User user = mapper.toEntity(request);
         user.setRole(Role.EMPLOYEE);
-        user.setCreatedAt(LocalDateTime.now());
 
         User savedUser = repository.save(user);
 
