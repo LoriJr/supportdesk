@@ -22,7 +22,7 @@ public class UserBuilder {
     private static void initValues(UserBuilder userBuilder) {
         userBuilder.id = 1L;
         userBuilder.name = "Usuario Valido";
-        userBuilder.email = "email@gmail";
+        userBuilder.email = "email@gmail.com";
         userBuilder.role = Role.EMPLOYEE;
         userBuilder.createdAt = LocalDateTime.now();
     }
