@@ -1,9 +1,11 @@
 package com.viratech.supportdesk.service;
 
+import com.viratech.supportdesk.builders.UserBuilder;
 import com.viratech.supportdesk.domain.User;
 import com.viratech.supportdesk.dto.UserRequest;
 import com.viratech.supportdesk.dto.UserResponse;
 import com.viratech.supportdesk.enums.Role;
+import com.viratech.supportdesk.exceptions.EmailAlreadyExistsException;
 import com.viratech.supportdesk.exceptions.InvalidParameterException;
 import com.viratech.supportdesk.mapper.UserMapper;
 import com.viratech.supportdesk.repository.UserRepository;
@@ -17,8 +19,10 @@ import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.Optional;
 import java.util.stream.Stream;
 
+import static com.viratech.supportdesk.builders.UserBuilder.aUser;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
@@ -79,4 +83,23 @@ public class UserServiceTest {
                 ()-> service.saveUser(user));
         assertEquals(mensagem, exception.getMessage());
     }
+
+    @Test
+    @DisplayName("Deve lançar exceção quando salvar usuário com email que já existe")
+    public void shouldThrowExceptionWhenAlreadyExists(){
+
+        User user = aUser().now();
+        UserRequest request = new UserRequest(
+                "Usuario Valido",
+                "email@gmail.com"
+        );
+
+        when(repository.findUserByEmail(request.email())).thenReturn(Optional.of(user));
+
+        EmailAlreadyExistsException ex = assertThrows(EmailAlreadyExistsException.class,
+                ()-> service.saveUser(request));
+
+        assertEquals("Email already exists.", ex.getMessage());
+    }
+
 }

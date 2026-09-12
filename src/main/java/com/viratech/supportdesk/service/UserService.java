@@ -28,7 +28,14 @@ public class UserService {
 
     public UserResponse saveUser(UserRequest request){
 
-        if(validateEmailIsExists(request.email())){
+        if (request.name() == null || request.name().isBlank()) {
+            throw new InvalidParameterException("Name must be not blank");
+        }
+        if (request.email() == null || request.email().isBlank()) {
+            throw new InvalidParameterException("Email must be not blank");
+        }
+
+        if (validateEmailIsExists(request.email())) {
             throw new EmailAlreadyExistsException("Email already exists.");
         }
 
