@@ -4,6 +4,7 @@ import com.viratech.supportdesk.domain.User;
 import com.viratech.supportdesk.dto.UserRequest;
 import com.viratech.supportdesk.dto.UserResponse;
 import com.viratech.supportdesk.enums.Role;
+import com.viratech.supportdesk.exceptions.EmailAlreadyExistsException;
 import com.viratech.supportdesk.exceptions.InvalidParameterException;
 import com.viratech.supportdesk.mapper.UserMapper;
 import com.viratech.supportdesk.repository.UserRepository;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.security.InvalidAlgorithmParameterException;
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -22,16 +24,19 @@ public class UserService {
     private final UserRepository repository;
     private final UserMapper mapper;
     private static final Logger log = LoggerFactory.getLogger(UserService.class);
+    private final String className = UserService.class.getSimpleName();
 
     public UserResponse saveUser(UserRequest request){
 
-        String className = UserService.class.getSimpleName();
-
-        if(request.name() == null || request.name().isBlank()){
+        if (request.name() == null || request.name().isBlank()) {
             throw new InvalidParameterException("Name must be not blank");
         }
-        if(request.email() == null || request.email().isBlank()){
+        if (request.email() == null || request.email().isBlank()) {
             throw new InvalidParameterException("Email must be not blank");
+        }
+
+        if (validateEmailIsExists(request.email())) {
+            throw new EmailAlreadyExistsException("Email already exists.");
         }
 
         User user = mapper.toEntity(request);
@@ -42,5 +47,9 @@ public class UserService {
         log.info("[{}] [SaveUser] Recebido dados do usuário {}", className, savedUser.getId());
 
         return mapper.toDto(savedUser);
+    }
+
+    public boolean validateEmailIsExists(String email){
+        return repository.findUserByEmail(email).isPresent();
     }
 }
