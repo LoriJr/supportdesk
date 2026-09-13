@@ -4,7 +4,7 @@ import com.viratech.supportdesk.domain.User;
 import com.viratech.supportdesk.dto.UserRequest;
 import com.viratech.supportdesk.dto.UserResponse;
 import com.viratech.supportdesk.enums.Role;
-import com.viratech.supportdesk.exceptions.EmailAlreadyExistsException;
+import com.viratech.supportdesk.exceptions.ConflictException;
 import com.viratech.supportdesk.exceptions.InvalidParameterException;
 import com.viratech.supportdesk.mapper.UserMapper;
 import com.viratech.supportdesk.repository.UserRepository;
@@ -12,10 +12,6 @@ import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-
-import java.security.InvalidAlgorithmParameterException;
-import java.time.LocalDateTime;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -36,7 +32,7 @@ public class UserService {
         }
 
         if (validateEmailIsExists(request.email())) {
-            throw new EmailAlreadyExistsException("Email already exists.");
+            throw new ConflictException("Email already exists.");
         }
 
         User user = mapper.toEntity(request);

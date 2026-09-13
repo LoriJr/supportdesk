@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler(EmailAlreadyExistsException.class)
-    public ResponseEntity<ErrorResponse> handleEmailAlreadyExists(EmailAlreadyExistsException ex){
+    @ExceptionHandler(ConflictException.class)
+    public ResponseEntity<ErrorResponse> handleEmailAlreadyExists(ConflictException ex){
 
         int status = HttpStatus.CONFLICT.value();
 

@@ -5,7 +5,7 @@ import com.viratech.supportdesk.domain.User;
 import com.viratech.supportdesk.dto.UserRequest;
 import com.viratech.supportdesk.dto.UserResponse;
 import com.viratech.supportdesk.enums.Role;
-import com.viratech.supportdesk.exceptions.EmailAlreadyExistsException;
+import com.viratech.supportdesk.exceptions.ConflictException;
 import com.viratech.supportdesk.exceptions.InvalidParameterException;
 import com.viratech.supportdesk.mapper.UserMapper;
 import com.viratech.supportdesk.repository.UserRepository;
@@ -100,7 +100,7 @@ public class UserServiceTest {
 
         when(repository.findUserByEmail(request.email())).thenReturn(Optional.of(user));
 
-        EmailAlreadyExistsException ex = assertThrows(EmailAlreadyExistsException.class,
+        ConflictException ex = assertThrows(ConflictException.class,
                 ()-> service.saveUser(request));
 
         assertEquals("Email already exists.", ex.getMessage());
