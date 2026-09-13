@@ -92,13 +92,12 @@ public class UserServiceTest {
     @DisplayName("Deve lançar exceção quando salvar usuário com email que já existe")
     public void shouldThrowExceptionWhenAlreadyExists(){
 
-        User user = aUser().now();
         UserRequest request = new UserRequest(
                 "Usuario Valido",
                 "email@gmail.com"
         );
 
-        when(repository.findUserByEmail(request.email())).thenReturn(Optional.of(user));
+        when(repository.emailExists(request.email())).thenReturn(true);
 
         ConflictException ex = assertThrows(ConflictException.class,
                 ()-> service.saveUser(request));

@@ -31,7 +31,9 @@ public class UserService {
             throw new InvalidParameterException("Email must be not blank");
         }
 
-        if (validateEmailIsExists(request.email())) {
+        boolean isEmailExists = repository.emailExists(request.email());
+
+        if (isEmailExists) {
             throw new ConflictException("Email already exists.");
         }
 
@@ -45,7 +47,4 @@ public class UserService {
         return mapper.toDto(savedUser);
     }
 
-    public boolean validateEmailIsExists(String email){
-        return repository.findUserByEmail(email).isPresent();
-    }
 }
