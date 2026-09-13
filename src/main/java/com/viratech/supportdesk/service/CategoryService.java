@@ -4,7 +4,6 @@ import com.viratech.supportdesk.domain.Category;
 import com.viratech.supportdesk.dto.CategoryRequest;
 import com.viratech.supportdesk.dto.CategoryResponse;
 import com.viratech.supportdesk.exceptions.ConflictException;
-import com.viratech.supportdesk.exceptions.InvalidParameterException;
 import com.viratech.supportdesk.mapper.CategoryMapper;
 import com.viratech.supportdesk.repository.CategoryRepository;
 import lombok.RequiredArgsConstructor;
