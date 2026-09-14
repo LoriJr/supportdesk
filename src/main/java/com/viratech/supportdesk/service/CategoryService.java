@@ -38,10 +38,7 @@ public class CategoryService {
     }
 
     public List<CategoryResponse> listAllCategories(){
-
         List<Category> category = repository.findAll();
-        List<CategoryResponse> response = mapper.toResponseList(category);
-
-        return response;
+        return mapper.toResponseList(category);
     }
 }

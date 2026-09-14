@@ -5,6 +5,8 @@ import com.viratech.supportdesk.dto.UserRequest;
 import com.viratech.supportdesk.dto.UserResponse;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Component
 public class UserMapper {
 
@@ -23,5 +25,9 @@ public class UserMapper {
                 user.getRole(),
                 user.getCreatedAt()
         );
+    }
+
+    public List<UserResponse> toResponseList(List<User> user){
+        return user.stream().map(this::toDto).toList();
     }
 }

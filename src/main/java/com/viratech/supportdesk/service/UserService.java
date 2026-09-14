@@ -13,6 +13,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class UserService {
@@ -45,6 +47,11 @@ public class UserService {
         log.info("[{}] [SaveUser] Recebido dados do usuário {}", className, savedUser.getId());
 
         return mapper.toDto(savedUser);
+    }
+
+    public List<UserResponse> listAllUsers(){
+        List<User> listUsers = repository.findAll();
+        return mapper.toResponseList(listUsers);
     }
 
 }

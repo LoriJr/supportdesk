@@ -19,10 +19,10 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.Optional;
+import java.time.LocalDateTime;
+import java.util.List;
 import java.util.stream.Stream;
 
-import static com.viratech.supportdesk.builders.UserBuilder.aUser;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
@@ -103,6 +103,28 @@ public class UserServiceTest {
                 ()-> service.saveUser(request));
 
         assertEquals("Email already exists.", ex.getMessage());
+    }
+
+    @Test
+    public void shouldShowAllUsers(){
+
+        List<User> userList = List.of(
+                UserBuilder.aUser().withId(1L).now(),
+                (UserBuilder.aUser().withId(2L).now()
+        ));
+
+        List<UserResponse> responseList = List.of(
+                new UserResponse(1L, "Usuario1 Valido", "email1@gmail.com", Role.EMPLOYEE, LocalDateTime.now()),
+                new UserResponse(2L, "Usuario2 Valido", "email2@gmail.com", Role.EMPLOYEE, LocalDateTime.now())
+        );
+
+        when(mapper.toResponseList(userList)).thenReturn(responseList);
+        when(repository.findAll()).thenReturn(userList);
+
+        List<UserResponse> result = service.listAllUsers();
+
+       assertNotNull(result);
+       assertEquals(2, result.size());
     }
 
 }
