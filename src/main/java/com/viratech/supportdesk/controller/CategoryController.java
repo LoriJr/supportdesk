@@ -6,10 +6,9 @@ import com.viratech.supportdesk.service.CategoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/category")
@@ -23,4 +22,10 @@ public class CategoryController {
         CategoryResponse response = service.saveCategory(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
+
+    @GetMapping
+    public ResponseEntity<List<CategoryResponse>> listAll(){
+        return ResponseEntity.ok().body(service.listAllCategories());
+    }
+
 }
