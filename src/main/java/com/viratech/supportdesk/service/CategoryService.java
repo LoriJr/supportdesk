@@ -11,6 +11,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class CategoryService {
@@ -33,5 +35,13 @@ public class CategoryService {
         Category saveCategory = repository.save(category);
 
         return mapper.toDto(saveCategory);
+    }
+
+    public List<CategoryResponse> listAllCategories(){
+
+        List<Category> category = repository.findAll();
+        List<CategoryResponse> response = mapper.toResponseList(category);
+
+        return response;
     }
 }

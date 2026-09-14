@@ -5,6 +5,8 @@ import com.viratech.supportdesk.dto.CategoryRequest;
 import com.viratech.supportdesk.dto.CategoryResponse;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Component
 public class CategoryMapper {
 
@@ -19,5 +21,9 @@ public class CategoryMapper {
                 entity.getId(),
                 entity.getName()
         );
+    }
+
+    public List<CategoryResponse> toResponseList(List<Category> category){
+        return category.stream().map(this::toDto).toList();
     }
 }
